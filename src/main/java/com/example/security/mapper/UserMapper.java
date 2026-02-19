@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface UserMapper {
-    @Select("SELECT * FROM user WHERE id = #{id}")
     UserDTO selectUserById(String id);
+    void insertUser(UserDTO userDTO); // 유저 회원가입
+
 }

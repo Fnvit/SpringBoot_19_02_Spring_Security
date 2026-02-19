@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+</head>
+<body>
+    <h1>회원가입 페이지</h1>
+    <fieldset>
+        <legend>사용자 정보 입력</legend>
+        <form action="/user/signup" method="post">
+            <div>
+                <label>
+                    <b>아이디</b>
+                    <input type="text" name="id">
+                    <button type="button">중복검사</button>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <b>비밀번호</b>
+                    <input type="text" name="password">
+                </label>
+            </div>
+            <div>
+                <label>
+                    <b>휴대폰</b>
+                    <input type="text" name="phone">
+                    <button type="button">휴대폰 인증</button>
+                </label>
+            </div>
+            <div>
+                <label>
+                    <b>이메일</b>
+                    <input type="text" name="email">
+                </label>
+            </div>
+            <div>
+                <label>
+                    <b>닉네임(선택)</b>
+                    <input type="text" name="nickname">
+                </label>
+            </div>
+            <div>
+                <input type="submit" value="회원가입">
+                <input type="button" value="돌아가기">
+            </div>
+        </form>
+    </fieldset>
+</body>
+</html>

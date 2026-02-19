@@ -21,26 +21,23 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.httpBasic(Customizer.withDefaults());
+        http.csrf(config -> config.disable());
+//        http.httpBasic(Customizer.withDefaults());
+
 
         http.authorizeHttpRequests( (registry) -> {
-//            registry
-//                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-//                .requestMatchers(
-//                    "/",
-//                    "/login"
-//                ).permitAll()
-//                .anyRequest().authenticated();
-            registry.anyRequest().authenticated();
+            registry.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                    .requestMatchers("/user/login", "/user/signup").permitAll()
+                    .anyRequest().authenticated();
         });
 
 
         http.formLogin((config) -> {
-            config.loginPage("/login"); // FORM 로그인을 할 때 사용하는 Controller(html)경로
+            config.loginPage("/user/login"); // FORM 로그인을 할 때 사용하는 Controller(html)경로
             config.usernameParameter("id"); // id 적는 input의 name 속성명 (username이 기본)
             config.passwordParameter("password"); // pw 적는 input의 name 속성명 (password가 기본)
-            config.loginProcessingUrl("/login"); // 로그인 시도시, form 태그의 action 경로값
-            config.defaultSuccessUrl("/"); // 로그인이 성공 시 자동으로 이동하려는 GET 경로(Redirection)
+            config.loginProcessingUrl("/user/login"); // 로그인 시도시, form 태그의 action 경로값
+//            config.defaultSuccessUrl("/"); // 로그인이 성공 시 자동으로 이동하려는 GET 경로(Redirection)
             config.permitAll();
         });
 
