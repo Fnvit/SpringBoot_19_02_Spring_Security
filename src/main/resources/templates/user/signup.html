@@ -13,7 +13,7 @@
                 <label>
                     <b>아이디</b>
                     <input type="text" name="id">
-                    <button type="button">중복검사</button>
+                    <button type="button" id="id_check_button">중복검사</button>
                 </label>
             </div>
             <div>
@@ -49,3 +49,35 @@
     </fieldset>
 </body>
 </html>
+<script>
+    const idInput = document.getElementsByName('id')[0]; // id input
+    const idCheckButton = document.querySelector('#id_check_button'); // 아이디 중복검사 버튼
+
+    // 아이디 중복검사 버튼을 누르면
+    idCheckButton.onclick = () => {
+        const userId =  idInput.value;
+        fetch(`/user/id/${userId}`)
+            .then(response => response.json())
+            .then(value => {
+                if(value){
+                    alert('해당 아이디는 사용가능합니다!')
+                }else{
+                    alert('해당 아이디는 이미사용중입니다!')
+                }
+            })
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
