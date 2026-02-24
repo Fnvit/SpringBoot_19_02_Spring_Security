@@ -27,7 +27,7 @@ public class SecurityConfiguration {
 
         http.authorizeHttpRequests( (registry) -> {
             registry.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                    .requestMatchers("/user/login", "/user/signup").permitAll()
+                    .requestMatchers("/user/login", "/user/signup", "/user/id/*").permitAll()
                     .anyRequest().authenticated();
         });
 

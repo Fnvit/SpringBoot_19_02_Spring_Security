@@ -1,0 +1,19 @@
+### Access token 발급받기
+POST https://api.iamport.kr/users/getToken
+Content-Type: application/json
+
+{
+  "imp_key": "d",
+  "imp_secret": "d"
+}
+
+### Access Token으로 본인인증 결과 조회하기
+GET https://api.iamport.kr/certifications/d
+Authorization: 90f7cbfd1584922f198c7155e1b109774cb7b728
+
+
+
+
+
+
+

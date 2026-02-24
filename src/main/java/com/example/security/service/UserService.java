@@ -16,7 +16,7 @@ public class UserService {
      * @param id 유저의 id
      * @return 유저가 존재하면 true / 존재하지 않으면 false
      */
-    private boolean user_is_exists(String id){
+    public boolean user_is_exists(String id){
         UserDTO user = userMapper.selectUserById(id);
         return user != null;
     }

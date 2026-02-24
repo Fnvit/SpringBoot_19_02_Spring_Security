@@ -1,18 +1,18 @@
 package com.example.security.controller;
 
 import com.example.security.dto.UserDTO;
+import com.example.security.service.PortoneService;
 import com.example.security.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
     @Autowired UserService userService;
-    
+    @Autowired PortoneService portoneService;
+
     @GetMapping("/login")
     public void get_login(){
 
@@ -28,15 +28,35 @@ public class UserController {
      * @param user HTML에서 받아온 정보를 가지는 UserDTO
      */
     @PostMapping("/signup")
-    public String post_signup(UserDTO user){
+    public String post_signup(
+            UserDTO user,
+            @RequestParam("impUID") String impUID
+    ){
         System.out.println("user: " + user);
-        // 받아온 유저를 회원가입 시키기
-        boolean result = userService.signup_user(user);
+        boolean isPhoneCert = portoneService.phone_certificate(impUID, user.getPhone());
         // 회원가입 성공
-        if(result){
+        if(isPhoneCert){
+            return "redirect:/user/login"; // 로그인 창으로 이동 (GET)
+        }
+        // 받아온 유저를 회원가입 시키기
+        boolean isSigned = userService.signup_user(user);
+        // 회원가입 성공
+        if(isSigned){
             return "redirect:/user/login"; // 로그인 창으로 이동 (GET)
         }
         // 회원가입 실패
         return "redirect:/user/signup"; // 다시 회원가입창으로 이동 (GET)
     }
+
+
+    @GetMapping("/id/{userId}")
+    @ResponseBody
+    public Boolean get_check_user_exist(@PathVariable String userId){
+        return !userService.user_is_exists(userId);
+    }
+
+
+
+
+
 }
