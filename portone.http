@@ -11,6 +11,17 @@ Content-Type: application/json
 GET https://api.iamport.kr/certifications/d
 Authorization: 90f7cbfd1584922f198c7155e1b109774cb7b728
 
+### 네이버 엑세스 토큰으로 회원 정보 조회하기
+GET https://openapi.naver.com/v1/nid/me
+Authorization: Bearer AAAANQXUSdeEvC3tiFyxeRPgVdipvoHRhl6035po1Z-J3XkPYwQ7mkODKm6D0HaRJ9aMOlMJn7EG2LGRVQychgo7xU4
+
+### 서버 사이드 OAUTH2 일 때, code 발급 받은 후, 해당 code로 access_token 발급받기
+GET https://nid.naver.com/oauth2.0/token?
+    grant_type=authorization_code&
+    client_id=9EKKC9glafVceA28Vk0x&
+    client_secret=XaqgNy1B9R&
+    code=tzEuww3RlsGRvegrMj
+
 
 
 

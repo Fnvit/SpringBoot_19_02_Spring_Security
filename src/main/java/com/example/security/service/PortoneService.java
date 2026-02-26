@@ -11,8 +11,8 @@ import java.util.Map;
 
 @Service
 public class PortoneService {
-    private final String IMP_KEY = "d";
-    private final String IMP_SECRET = "d";
+    private final String IMP_KEY = "3787546272824711";
+    private final String IMP_SECRET = "ㅅ";
     private final String ACCESS_TOKEN_URL = "https://api.iamport.kr/users/getToken";
     private final String CERTIFICATIONS_URL = "https://api.iamport.kr/certifications/{impUID}";
     private RestTemplate restTemplate = new RestTemplate();

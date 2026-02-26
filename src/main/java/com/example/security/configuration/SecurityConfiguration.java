@@ -31,6 +31,11 @@ public class SecurityConfiguration {
                     .anyRequest().authenticated();
         });
 
+        http.oauth2Login(config -> {
+            config.loginPage("/user/login");
+            config.permitAll();
+        });
+
 
         http.formLogin((config) -> {
             config.loginPage("/user/login"); // FORM 로그인을 할 때 사용하는 Controller(html)경로

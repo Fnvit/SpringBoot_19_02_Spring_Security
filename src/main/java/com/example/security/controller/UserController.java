@@ -34,18 +34,18 @@ public class UserController {
     ){
         System.out.println("user: " + user);
         boolean isPhoneCert = portoneService.phone_certificate(impUID, user.getPhone());
-        // 회원가입 성공
-        if(isPhoneCert){
-            return "redirect:/user/login"; // 로그인 창으로 이동 (GET)
+        // 본인인증 실패
+        if(!isPhoneCert){
+            return "redirect:/user/signup"; // 다시 회원가입창으로 이동 (GET)
         }
         // 받아온 유저를 회원가입 시키기
         boolean isSigned = userService.signup_user(user);
-        // 회원가입 성공
-        if(isSigned){
-            return "redirect:/user/login"; // 로그인 창으로 이동 (GET)
-        }
         // 회원가입 실패
-        return "redirect:/user/signup"; // 다시 회원가입창으로 이동 (GET)
+        if(!isSigned){
+            return "redirect:/user/signup"; // 다시 회원가입창으로 이동 (GET)
+        }
+        // 회원가입 성공
+        return "redirect:/user/login"; // 로그인 창으로 이동 (GET)
     }
 
 
