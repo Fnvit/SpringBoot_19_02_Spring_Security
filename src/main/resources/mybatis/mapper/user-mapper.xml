@@ -7,6 +7,13 @@
         SELECT * FROM user WHERE id = #{id}
     </select>
 
+    <select id="selectUserBySNSId" resultType="com.example.security.dto.UserDTO">
+        SELECT * FROM sns_user SNS
+            INNER JOIN user USER
+            ON USER.id = SNS.user_id
+        WHERE SNS.id = #{snsId}
+    </select>
+
     <insert id="insertUser">
         INSERT INTO user (id, password, nickname, phone, email, register_date)
         VALUES (#{id}, #{password}, #{nickname}, #{phone}, #{email}, CURDATE())

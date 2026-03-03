@@ -1,6 +1,8 @@
 package com.example.security.configuration;
 
 import com.example.security.dto.UserDTO;
+import com.example.security.handler.CustomOAuth2FailureHandler;
+import com.example.security.handler.CustomOAuth2SuccessHandler;
 import org.springframework.boot.security.autoconfigure.web.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,6 +35,8 @@ public class SecurityConfiguration {
 
         http.oauth2Login(config -> {
             config.loginPage("/user/login");
+            config.failureHandler(new CustomOAuth2FailureHandler());
+            config.successHandler(new CustomOAuth2SuccessHandler()); // OAuth2 로그인이 성공했다면 실행되는 Handler를 등록
             config.permitAll();
         });
 

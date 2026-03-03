@@ -8,5 +8,5 @@ import org.apache.ibatis.annotations.Select;
 public interface UserMapper {
     UserDTO selectUserById(String id);
     void insertUser(UserDTO userDTO); // 유저 회원가입
-
+    UserDTO selectUserBySNSId(String snsId);
 }

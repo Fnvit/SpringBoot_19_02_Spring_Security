@@ -55,8 +55,8 @@ public class UserController {
         return !userService.user_is_exists(userId);
     }
 
-
-
-
+    /*******************************************************/
+    @GetMapping("/mypage/info")
+    public void get_mypage_info(){}
 
 }
