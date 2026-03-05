@@ -3,6 +3,8 @@ package com.example.security.configuration;
 import com.example.security.dto.UserDTO;
 import com.example.security.handler.CustomOAuth2FailureHandler;
 import com.example.security.handler.CustomOAuth2SuccessHandler;
+import com.example.security.service.CustomUserDetailsService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.security.autoconfigure.web.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,10 +19,17 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+    @Autowired CustomUserDetailsService userDetailsService;
+    @Autowired DataSource dataSource; // application-properties에서 정의한 Database Connection
+    
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.csrf(config -> config.disable());
@@ -50,30 +59,27 @@ public class SecurityConfiguration {
             config.permitAll();
         });
 
+        http.rememberMe(config -> {
+            config.rememberMeParameter("remember_me");
+            config.rememberMeCookieDomain("localhost");
+            config.userDetailsService(userDetailsService); // 실제 로그인이 이루어지는 절차를 정의하는 Service 객체
+            config.tokenRepository(persistentTokenRepository()); // 토큰을 저장하는 저장소 선택. Database를 선택함.
+            config.tokenValiditySeconds(60 * 60 * 24 * 30); // 토큰 유효기간. 30일
+        });
+
         return http.build();
     }
-
-
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        var userDetailsService = new InMemoryUserDetailsManager();
-//        var user = UserDTO.builder()
-//                .id("korea")
-//                .password("1234")
-//                .build();
-//        userDetailsService.createUser(user);
-////        userDetailsService.createUser(user2);
-//        return userDetailsService;
-//    }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        return web -> web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-//    }
+    // remember-me 사용시의 token 저장소
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository() {
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+        return tokenRepository;
+    }
 }

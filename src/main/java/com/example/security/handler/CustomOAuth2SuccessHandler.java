@@ -27,42 +27,15 @@ public class CustomOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHa
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         // 현재 principal이 UserDTO라면, SNS 연동 여부를 확인한 후, SNS 연동을 시킨다.
-        Object principal = authentication.getPrincipal();
-        System.out.println("principal : " + principal);
-        SNSUserDTO snsUser = (SNSUserDTO) principal;
-        System.out.println("oAuth2User 입니다");
-
-        switch (snsUser.getSns().toUpperCase()){
-            case "NAVER":
-                UserDTO user = userMapper.selectUserBySNSId(snsUser.getId());
-                if(user == null){
-                    System.out.println("User not found");
-                    throw new OAuth2AuthenticationException("ACCESS_DENIED");
-                }
-                break;
-            case "GOOGLE":
-                break;
-            default:
-                break;
+        UserDTO user = (UserDTO) authentication.getPrincipal();
+        // 로그인 창에서 SNS 로그인을 시도했다면 => 홈페이지
+        if(user.getSnsId() == null){
+            response.sendRedirect("/");
         }
-
-        if(principal instanceof UserDTO){
-            // 로그인 된 유저를 가져옴
-            UserDTO user = (UserDTO) principal;
-            System.out.println("user 입니다");
-            // SNS 연동 확인 (DB)
-            UserDTO user = userMapper.selectUserBySNSId(snsUser.getId());
-            if(user == null){
-                System.out.println("User not found");
-                // INSERT 작업
-            }
+        // 마이페이지 창에서 SNS 로그인을 시도했다면 => 마이페이지로 다시 이동
+        else{
+            response.sendRedirect("/user/mypage/info");
         }
-        // 로그인 창에서 OAuth2 로그인 했을 시
-        else if(principal instanceof OAuth2User){
-
-        }
-
-        response.sendRedirect("/user/mypage/info");
     }
 }
 

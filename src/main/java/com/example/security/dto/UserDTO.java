@@ -1,6 +1,7 @@
 package com.example.security.dto;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,10 +16,10 @@ import java.util.Map;
 @Setter
 @Getter
 @ToString
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO implements UserDetails {
+public class UserDTO extends SNSUserDTO implements UserDetails {
     private String id; // varchar(15) pk
     private String password; // char 60 not null
     private String nickname; // varchar(10) null

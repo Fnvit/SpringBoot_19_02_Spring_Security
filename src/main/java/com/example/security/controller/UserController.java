@@ -3,8 +3,12 @@ package com.example.security.controller;
 import com.example.security.dto.UserDTO;
 import com.example.security.service.PortoneService;
 import com.example.security.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -14,8 +18,12 @@ public class UserController {
     @Autowired PortoneService portoneService;
 
     @GetMapping("/login")
-    public void get_login(){
-
+    public void get_login(HttpSession session, Model model) {
+        Object oauth2ErrorMessage = session.getAttribute("oauth2ErrorMessage");
+        session.invalidate(); // 브라우저의 세션 정보를 삭제한다. 로그아웃과 같은 개념.
+        if(oauth2ErrorMessage != null) {
+            model.addAttribute("oauth2ErrorMessage", oauth2ErrorMessage.toString());
+        }
     }
 
     @GetMapping("/signup")
